@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Vertical Linear Time Line</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="https://github.com/jvining">
+	<meta name="description" content="Proof of Concept Demo Illustrating a Vertical Linear Time Line, Built on Vertical Linear Time Line (http://bit.ly/1SnymWq)">
+ 
+	<!-- Open Graph -->
+ 	<meta property="og:url" content="https://jvining.github.io/vertical-linear-time-line" />
+	<meta property="og:type" content="Product" />
+	<meta property="og:title" content="Starter Bootstrap HTML" />
+	<meta property="og:description" content="Proof of Concept Demo Illustrating a Vertical Linear Time Line, Built on Vertical Linear Time Line (http://bit.ly/1SnymWq)" />
+	<meta property="og:image" content="https://placeholdit.co/i/600x315?bg=563d7c&fc=fff&text=Starter%20Bootstrap%20HTML" />
+
+	<!-- CSS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+ 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" type="text/css">
+	
+	<style>
+		body {background:#fbfbfb; font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";}
+		body > .container {margin-top:5em; min-height:calc(85vh - 10em);}
+		body h1, body h2, body h3, body h4, body h5 {font-weight:300;}
+		body [class*="col-"] {font-size:16px; color:#5f5f5f;}
+		body .navbar .nav.navbar-nav{float:right;}
+		
+		footer {background:#222; margin-top:50px; padding:25px 0;}
+		footer [class*="col-"] {color:#666;}
+		footer [class*="col-"] a {color:#999;}
+		footer [class*="col-"] a:hover {color:#fff;}
+		
+		.voffset  {margin-top:0.2em;} .voffset0 {margin-top:0.5em}  .voffset1 {margin-top:1.0em;}  
+		.voffset2 {margin-top:2.0em;} .voffset3 {margin-top:3.0em;} .voffset4 {margin-top:4.0em;} 
+		.voffset5 {margin-top:5.0em;} .voffset6 {margin-top:6.0em;} .voffset7 {margin-top:7.0em;}
+		.voffset8 {margin-top:8.0em;} .voffset9 {margin-top:9.0em;} .voffsetx {margin-top:10em;}
+		
+		.col-xs-15,.col-sm-15, .col-md-15, .col-lg-15 {position:relative; min-height:1px; padding:0px .5em;}
+		.col-xs-15{width:100%; float:left;}
+		@media (min-width:768px){.col-sm-15 {width:20%; float:left;}}
+		@media (min-width:992px){.col-md-15 {width:20%; float:left;}}
+		@media (min-width:1200px){.col-lg-15 {width:20%; float:left;}}
+		
+		.fa-lg,.fa-1x,.fa-2x,.fa-3x,.fa-4x,.fa-5x,.fa-6x,.fa-7x,.fa-8x,.fa-9x,.fa-10x {line-height:1.25em;} 
+		.fa-lg {font-size:1.3em;} .fa-1x {font-size:1.5em;} .fa-2x {font-size:2.0em;} 
+		.fa-3x {font-size:3.0em;} .fa-4x {font-size:4.0em;} .fa-5x {font-size:5.0em;}
+		.fa-6x {font-size:6.0em;} .fa-7x {font-size:7.0em;} .fa-8x {font-size:8.0em;}
+		.fa-9x {font-size:9.0em;} .fa-10x{font-size:10em;}
+		
+		.text-light {font-weight:300;}
+		.text-normal{font-weight:400;}
+		.text-bold {font-weight:700;}
+		.text-white {color:#fff;}
+		.text-shadow {text-shadow:rgba( 0, 0, 0, .25 ) .045em .045em;}
+		
+		.btn,.btn:hover {transition:.3s ease-in-out;}
+		.bg-lighten {box-shadow:inset 10000px 0 0 rgba(255, 255, 255, .90);}
+		.bg-darken {box-shadow:inset 10000px 0 0 rgba(0, 0, 0, .15);} 
+		
+		/* Project Specific Styling */
+		.timeline{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;list-style:none; padding-left:0;}
+		.timeline:before{position:absolute;height:90%;padding-right:1em;border-right:2px solid #eee;content:"";}
+		.timeline_item{display:-webkit-flex;display:flex;-webkit-align-items:stretch;align-items:stretch;padding: 1em 0;}
+		.timeline_step{padding-right:1em; z-index:999;}
+		.timeline_title{padding-bottom:.5em; font-size:1em; padding:0; margin-top:-.25em;}
+		.timeline_points{padding:0;list-style:none;}
+ 		.timeline_step_marker{position:relative;display:table-cell;height:2em;min-height:2em;width:2em;min-width:2em;border:4px solid #F2F2F2;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;background-color:white;z-index:0;}
+ 		.timeline li:nth-child(even) .timeline_step_marker {border-color:#666;}
+		.timeline li:nth-child(odd) .timeline_step_marker {border-color:#aaa;}
+ 		.row [class*="col-"]:nth-child(odd) .timeline li:nth-child(odd) .timeline_step_marker {border-color:#666;}
+		.row [class*="col-"]:nth-child(odd) .timeline li:nth-child(even) .timeline_step_marker {border-color:#aaa;}
+	</style>
+
+</head>
+<body>
+
+ 	<nav class="navbar navbar-inverse navbar-fixed-top">
+ 	    <div class="container">
+ 	        <div class="navbar-header">
+ 	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+ 	                <span class="sr-only">Toggle navigation</span>
+ 	                <span class="icon-bar"></span>
+ 	                <span class="icon-bar"></span>
+ 	                <span class="icon-bar"></span>
+ 	            </button>
+ 	            <a class="navbar-brand">Vertical Linear Time Line</a>
+ 	        </div>
+ 	        <div class="collapse navbar-collapse" id="navbar-collapse">
+ 	            <ul class="nav navbar-nav ">
+ 	                <li><a>About</a></li>
+ 	                <li><a>Services</a></li>
+ 	                <li><a>Contact</a></li>
+ 	             </ul>
+ 	        </div>
+ 	    </div>
+ 	</nav>
+
+	<div class="container voffset4">
+		<div class="row">
+			<div class="col-md-4">
+ 				<h3>Day 1 - Monday, March 25 </h3>
+				<ul class="timeline">
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">7:30 Registration and Breakfast in The Solutions Zone</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">8:30 Executive Panel: Reimagining Procurement's Role</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">9:10 Keynote Presentation:Emerging Technologies: The Supply Chain of the Future</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">11:00 Interactive Case Study: It's Not Just Savings</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">1:45 Panel: Winning The War for Procurement Talent</div>
+						</div>
+					</li>
+ 				</ul>
+ 			</div>
+			<div class="col-md-4">
+ 				<h3>Day 2 - Tuesday, March 26 </h3>
+				<ul class="timeline">
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">8:30 Keynote Fireside Chat: Bringing Together Procurement & Your Supply Chains</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">9:30 Panel: Risk Management in Uncertain Times</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">10:40 Case Study: CRM for Procurement</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">12:40 Lunch and ProcureCon EPIC Awards Ceremony</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">3:10 Workshop: Supplier Diversity</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">4:30 Category Roundtable Discussions</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">5:50 Escape to Margarita Island Reception</div>
+						</div>
+					</li>
+  				</ul>
+ 			</div>
+			<div class="col-md-4">
+ 				<h3>Day 3 - Wednesday, March 27 </h3>
+				<ul class="timeline">
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">8:45 Keynote: Making A Difference - Change Management</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">9:20 Working Groups: Mastering Emerging Practices</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">10:40 Procurement Problem Solving Workshop</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">11:30 Roundtable Discussions</div>
+						</div>
+					</li>
+					<li class="timeline_item">
+						<div class="timeline_step">
+							<div class="timeline_step"><div class="timeline_step_marker"></div></div>
+						</div>
+						<div class="timeline_content">
+							<div class="timeline_title">1:00 Lunch & Conference Ends</div>
+						</div>
+					</li>
+   				</ul>
+ 			</div>
+ 		</div>
+	</div>
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<p>Vertical Linear Time Line &copy; <script>new Date().getFullYear()>2010&&document.write(new Date().getFullYear());</script></p>
+  				</div>
+				<div class="col-md-4 col-md-offset-4">
+					<ul class="list-unstyled list-inline">
+						<li><a target="_blank" href="https://getbootstrap.com" data-toggle="tooltip" data-placement="top" data-original-title="Version: 3.3.7">Bootstrap </a></li>
+						<li><a target="_blank" href="https://fontawesome.io/" data-toggle="tooltip" data-placement="top" data-original-title="Version: 4.6.3">Font Awesome </a></li>
+						<li><a target="_blank" href="https://jquery.com/" data-toggle="tooltip" data-placement="top" data-original-title="Version: 1.9.1">Jquery </a></li>
+ 					</ul>
+ 	 			</div>
+			</div>
+		</div>
+	</footer>
+	
+<!-- JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+	// Enable Tool Tips Globally 
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+</body>
+</html>
